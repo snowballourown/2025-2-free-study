@@ -1,0 +1,151 @@
+8-1 백준 1940
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        int M = Integer.parseInt(br.readLine());
+
+        int[] arr = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr);   
+        int left = 0;
+        int right = N - 1;
+        int count = 0;
+
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+
+            if (sum == M) {
+                count++;
+                left++;
+                right--;
+            } else if (sum < M) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        bw.write(count + "");
+        bw.flush();
+    }
+}
+
+8-2 백준 1920
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr);
+
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < M; i++) {
+            int target = Integer.parseInt(st.nextToken());
+
+            int left = 0;
+            int right = N - 1;
+            boolean found = false;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                if (arr[mid] == target) {
+                    found = true;
+                    break;
+                } else if (arr[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            if (found) bw.write("1\n");
+            else bw.write("0\n");
+        }
+
+        bw.flush();
+    }
+}
+
+8-3 백준 11724
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static ArrayList<Integer>[] graph;
+    static boolean[] visited;
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        graph = new ArrayList[N + 1];
+        visited = new boolean[N + 1];
+
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+
+        int count = 0;
+
+        for (int i = 1; i <= N; i++) {
+            if (!visited[i]) {
+                dfs(i);
+                count++;
+            }
+        }
+
+        bw.write(count + "");
+        bw.flush();
+    }
+
+    static void dfs(int v) {
+        visited[v] = true;
+
+        for (int i = 0; i < graph[v].size(); i++) {
+            int next = graph[v].get(i);
+            if (!visited[next]) {
+                dfs(next);
+            }
+        }
+    }
+}
