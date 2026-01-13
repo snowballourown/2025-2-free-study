@@ -1,0 +1,101 @@
+백준 15649
+
+  
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static int N, M;
+    static int[] arr;
+    static boolean[] used;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        arr = new int[M];
+        used = new boolean[N + 1];
+
+        dfs(0);
+
+        bw.write(sb.toString());
+        bw.flush();
+    }
+
+    static void dfs(int depth) {
+        if (depth == M) {
+            for (int i = 0; i < M; i++) {
+                sb.append(arr[i]);
+                if (i != M - 1) sb.append(' ');
+            }
+            sb.append('\n');
+            return;
+        }
+
+        for (int i = 1; i <= N; i++) {
+            if (!used[i]) {
+                used[i] = true;
+                arr[depth] = i;
+                dfs(depth + 1);
+                used[i] = false;
+            }
+
+
+        }
+    }
+}
+
+백준 1920
+
+// 1920 수 찾기 - 이분 탐색 (Buffered)
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        int[] A = new int[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) A[i] = Integer.parseInt(st.nextToken());
+
+        Arrays.sort(A);
+
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < M; i++) {
+            int x = Integer.parseInt(st.nextToken());
+
+            int left = 0, right = N - 1;
+            boolean found = false;
+
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                if (A[mid] == x) {
+                    found = true;
+                    break;
+                } else if (A[mid] < x) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            if (found) bw.write("1\n");
+            else bw.write("0\n");
+        }
+
+        bw.flush();
+    }
+}
+
